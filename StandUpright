@@ -1,0 +1,1306 @@
+loadstring(game:HttpGetAsync("https://polar7.wtf/Arctic/Library.txt"))()
+
+Start("Project Polar", {})
+
+CreateMenu("Home Page")
+
+CreateNote("Invite : https://discord.gg/xC74wHrj99", "Home Page")
+
+CreateMenu("Local Player")
+
+CreateNotification("Project Polar", "If nothing is appearing after a update, notify polar.")
+
+local FolderDirectory = game.Workspace.fart2
+
+function Find(String)
+    local Found = {}
+    local strl = String:lower()
+        for i,v in pairs(game.Players:GetPlayers()) do
+            if v.Name:lower():sub(1, #String) == String:lower() or v.DisplayName:lower():sub(1, #String) == String:lower() then
+                table.insert(Found,v.Name)
+            end
+        end    
+    return Found[1]
+end
+
+CreateNote("// Utilities //", "Local Player")
+
+CreateButton("Open Stand Storage", "Local Player", function()
+    for i, v in pairs(FolderDirectory.Idiot:GetChildren()) do
+        pcall(function()
+            if v:FindFirstChild("HumanoidRootPart") then
+                if (Vector3.new(-367.823, 23.5808, -309.685) - v:FindFirstChild("HumanoidRootPart").Position).Magnitude < 15 then
+                    QuestVerify = v:FindFirstChild("Done")
+                end
+            elseif v:FindFirstChild("Person"):FindFirstChild("HumanoidRootPart") then
+                if (Vector3.new(-367.823, 23.5808, -309.685) - v.Person:FindFirstChild("HumanoidRootPart").Position).Magnitude < 15 then
+                    QuestVerify = v:FindFirstChild("Done")
+                end
+            else
+                return
+            end
+        end)
+    end
+    QuestVerify:FireServer()
+end)
+
+CreateBar("Local Player", {})
+
+CreateNote("// Item Utilities //", "Local Player")
+
+CreateButton("Use Arrow", "Local Player", function()
+    if game.Players.LocalPlayer.Backpack:FindFirstChild("Stand Arrow") then
+        game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Stand Arrow"))
+        game.Players.LocalPlayer.Character:WaitForChild("Stand Arrow").Use:FireServer()
+    end
+end)
+
+CreateButton("Use Charged Arrow", "Local Player", function()
+    if game.Players.LocalPlayer.Backpack:FindFirstChild("Charged Arrow") then
+        game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Charged Arrow"))
+        game.Players.LocalPlayer.Character:WaitForChild("Charged Arrow").Use:FireServer()
+    end
+end)
+
+CreateButton("Use Requiem Arrow", "Local Player", function()
+    if game.Players.LocalPlayer.Backpack:FindFirstChild("Requiem Arrow") then
+        game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Requiem Arrow"))
+        game.Players.LocalPlayer.Character:WaitForChild("Requiem Arrow").Use:FireServer()
+    end
+end)
+
+CreateButton("Use Rokakaka", "Local Player", function()
+    if game.Players.LocalPlayer.Backpack:FindFirstChild("Rokakaka") then
+        game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Rokakaka"))
+        game.Players.LocalPlayer.Character:WaitForChild("Rokakaka").Use:FireServer()
+    end
+end)
+
+local AutoUmbrella = false
+CreateToggle("Auto Umbrella", "Local Player", function()
+    AutoUmbrella = not AutoUmbrella
+    
+    if AutoUmbrella then
+        while AutoUmbrella and task.wait() do
+            pcall(function()
+                if game.Players.LocalPlayer.Backpack:FindFirstChild("Umbrella") and not game.Players.LocalPlayer.Character:FindFirstChild("Umbrella") then
+                    game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Umbrella"))
+                end
+            end)
+        end
+    end
+end)
+
+local KetchupSell = false
+CreateToggle("Auto Sell Ketchup", "Local Player", function()
+    KetchupSell = not KetchupSell
+    
+    if KetchupSell then
+        while KetchupSell and task.wait() do
+            if game.Players.LocalPlayer.Backpack:FindFirstChild("Ketchup") then
+                game:GetService("ReplicatedStorage").Events.SellKetchup:FireServer("Lots")
+            end
+        end
+    end
+end)
+
+--[[
+
+CreateMenu("Auto Stand")
+
+CreateNote("// Settings - Main //", "Auto Stand")
+
+local Stands = false
+CreateToggle("Check Stand", "Auto Stand", function()
+    Stands = not Stands
+end)
+
+local Attributes = false
+CreateToggle("Check Attributes", "Auto Stand", function()
+    Attributes = not Attributes
+end)
+
+CreateBar("Auto Stand", {})
+
+CreateNote("// Settings - Stands //", "Auto Stand")
+
+--]]
+
+CreateMenu("Auto Pickup")
+
+local function IsSafe(A)
+    local IsSafe = false
+    for i, v in pairs(game:GetService("Workspace").ItemSpawns:GetChildren()) do
+        if IsSafe == false then
+            if (A - v.Position).Magnitude < 15 then
+                IsSafe = true
+                return true
+            end
+        end
+    end
+end
+
+CreateNote("// Settings //", "Auto Pickup")
+
+local TeleportTimer = 0.5
+CreateTextBox("Teleport Cooldown", "Auto Pickup", {CustomText = "Rec 0.5"}, function(Input)
+    TeleportTimer = tonumber(Input)
+end)
+
+CreateBar("Auto Pickup", {})
+
+local AutoPickup = false
+CreateToggle("Auto Pickup", "Auto Pickup", function()
+    AutoPickup = not AutoPickup
+    
+    if AutoPickup then
+        while AutoPickup and task.wait() do
+            pcall(function()
+                for i, v in pairs(game.Workspace.Items:GetChildren()) do
+                    task.wait(TeleportTimer)
+                    
+                    local SafeCheck = IsSafe(v.Handle.Position)
+                    
+                    if SafeCheck == true and v:IsA("Tool") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Handle.Position)
+                        game.Players.LocalPlayer.Character:WaitForChild(v.Name)
+                        game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+CreateMenu("Auto Buy")
+
+CreateNote("// Settings //", "Auto Buy")
+
+local Amount = 0
+CreateTextBox("How Many To Purchase", "Auto Buy", {CustomText = "Amount"}, function(A)
+    if tonumber(A) then
+        if tonumber(A) >= 1 then
+            Amount = tonumber(A)
+            CreateNotification("Arctic", "Amount Set To : "..tostring(Amount), {})
+        else
+            CreateNotification("Arctic", "Please Set The Number Above 0+", {})
+        end
+    end
+end)
+
+CreateBar("Auto Buy", {})
+
+CreateNote("! SOME ITEMS REQUIRE HIGH LEVELS TO PURCHASE !", "Auto Buy")
+
+CreateButton("Buy Rokakaka ( 2,500c )", "Auto Buy", function()
+    for i = 1, Amount, 1 do
+        game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("MerchantAU", "Option2")
+    end
+end)
+
+CreateButton("Stand Arrow ( 3,500c )", "Auto Buy", function()
+    for i = 1, Amount, 1 do
+        game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("MerchantAU", "Option4")
+    end
+end)
+
+CreateButton("Charged Arrow ( 50,000c )", "Auto Buy", function()
+    for i = 1, Amount, 1 do
+        game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("Merchantlvl120", "Option2")
+    end
+end)
+
+CreateButton("Umbrella ( 60,000c )", "Auto Buy", function()
+    for i, v in pairs(game:GetService("Workspace")[Folder].Idiot:GetChildren()) do
+        pcall(function()
+            if v:FindFirstChild("HumanoidRootPart") then
+                if (Vector3.new(-5246.59, -449.374, -3766.15) - v:FindFirstChild("HumanoidRootPart").Position).Magnitude < 15 then
+                    QuestVerify = v:FindFirstChild("Done")
+                end
+            elseif v:FindFirstChild("Person"):FindFirstChild("HumanoidRootPart") then
+                if (Vector3.new(-5246.59, -449.374, -3766.15) - v.Person:FindFirstChild("HumanoidRootPart").Position).Magnitude < 15 then
+                    QuestVerify = v:FindFirstChild("Done")
+                end
+            else
+                return
+            end
+        end)
+    end
+    
+    for i = 1, Amount, 1 do
+        QuestVerify:FireServer()
+    end
+end)
+
+CreateButton("Skull ( 500,000c )", "Auto Buy", function()
+    for i = 1, Amount, 1 do
+        game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("MerchantHomeless", "Option1")
+    end
+end)
+
+CreateButton("Dio Diary ( 1,500,000c )", "Auto Buy", function()
+    for i = 1, Amount, 1 do
+        game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("Merchantlvl120", "Option3")
+    end
+end)
+
+CreateButton("Requiem Arrow ( 1,500,000c )", "Auto Buy", function()
+    for i = 1, Amount, 1 do
+        game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("Merchantlvl120", "Option4")
+    end
+end)
+
+CreateMenu("Drop Page")
+
+local SetTool
+local Cooldown = 0
+
+CreateNote("// Settings //", "Drop Page")
+
+CreateTextBox("Drop Cooldown", "Drop Page", {CustomText = "Rec. 0.1-0.3"}, function(Input)
+    Cooldown = tonumber(Input)
+    
+    CreateNotification("Project Polar", "Cooldown set to : "..tostring(Cooldown))
+end)
+
+CreateButton("Select Tool", "Drop Page", function()
+    if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then
+        SetTool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Name
+        CreateNotification("Project Polar", "Tool set to : "..SetTool)
+        CreateNotification("Project Polar", "If this does not work, equip a random item and do /dropitem and try again.")
+    else
+        CreateNotification("Project Polar", "Equip a tool to drop.")
+    end
+end)
+
+CreateBar("Drop Page", {})
+
+local AutoDrop = false
+CreateToggle("Auto Drop", "Drop Page", function()
+    AutoDrop = not AutoDrop
+    
+    if SetTool then
+        while task.wait() and AutoDrop do
+            if game.Players.LocalPlayer.Backpack[SetTool] then
+                task.wait(Cooldown)
+                
+                game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):EquipTool(game:GetService("Players").LocalPlayer.Backpack[SetTool])
+                game:GetService("Players").LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar:CaptureFocus()
+                game:GetService("Players").LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar.Text = "/dropitem"
+                keypress(0x0D)
+            else
+                CreateNotification("Project Polar", "There are no more "..SetTool.."'s in your inventory.")
+            end
+        end
+    else
+        CreateNotification("Project Polar", "Set a tool before starting.")
+    end
+end)
+
+local HandItem = false
+CreateTextBoxToggle("Auto Hand Item", "Drop Page", {CustomText = "Player Name"}, function(Input)
+    HandItem = not HandItem
+    
+        if SetTool then
+        while task.wait() and HandItem do
+            if game.Players.LocalPlayer.Backpack[SetTool] then
+                task.wait(Cooldown)
+                
+                game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):EquipTool(game:GetService("Players").LocalPlayer.Backpack[SetTool])
+                game:GetService("Players").LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar:CaptureFocus()
+                game:GetService("Players").LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar.Text = "/handitem "..Find(Input)
+                keypress(0x0D)
+            else
+                CreateNotification("Project Polar", "There are no more "..SetTool.."'s in your inventory.")
+            end
+        end
+    else
+        CreateNotification("Project Polar", "Set a tool before starting.")
+    end
+end)
+
+CreateMenu("Lair Page")
+
+local Distance = 10
+
+CreateNote("// Farm Settings //", "Lair Page")
+
+CreateTextBox("Set Distance : ", "Lair Page", {CustomText = "Rec. 10"}, function(Input)
+    Distance = Input
+end)
+
+CreateBar("Lair Page", {})
+
+CreateNote("// Lairs //", "Lair Page")
+
+local function GetRemote(Position)
+    local Remote
+    
+    for i, v in pairs(FolderDirectory:GetDescendants()) do
+        if v.Name == "HumanoidRootPart" then
+            if (v.Position - Position).Magnitude < 15 then
+                Remote = v.Parent.Done
+            end
+        end
+    end
+    
+    if Remote then
+        return Remote
+    else
+        CreateNotification("Project Polar", "Failed to get a remote.")
+    end
+end
+
+local BadGi = false
+CreateToggle("Bad Gi Leader", "Lair Page", function()
+    BadGi = not BadGi
+    
+    if BadGi then
+        while BadGi and task.wait() do
+            pcall(function()
+                local FireRemote = GetRemote(Vector3.new(-727.007, 67.0773, -939))
+                
+                if FireRemote then
+                    FireRemote:FireServer()
+                    
+                    local Boss = game:GetService("Workspace").Living:WaitForChild("Boss")
+                    
+                    pcall(function()
+                        repeat
+                            task.wait()
+                            
+                            pcall(function()
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand").Head.Transparency == 1 then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                                
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Boss:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -Distance, 3, 1, 0, 0, 1)
+                                game.Players.LocalPlayer.Character.StandEvents.M1:FireServer()
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                game.Players.LocalPlayer.Character.Stand.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                            end)
+                        until Boss.Humanoid.Health == 0 or BadGi == false or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Health == 0
+                        
+                        game.Players.LocalPlayer.CharacterAdded:Wait()
+                        
+                        repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    end)
+                else
+                    CreateNotification("Project Polar", "Issue Obtaining Remote.")
+                end
+            end)
+        end
+    end
+end)
+
+local Dio = false
+CreateToggle("Dio", "Lair Page", function()
+    Dio = not Dio
+    
+    if Dio then
+        while Dio and task.wait() do
+            pcall(function()
+                local FireRemote = GetRemote(Vector3.new(-730.839, 67.1782, -382.167))
+                
+                if FireRemote then
+                    FireRemote:FireServer()
+                    
+                    local Boss = game:GetService("Workspace").Living:WaitForChild("Boss")
+                    
+                    pcall(function()
+                        repeat
+                            task.wait()
+                            
+                            pcall(function()
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand").Head.Transparency == 1 then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                                
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Boss:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -Distance, 3, 1, 0, 0, 1)
+                                game.Players.LocalPlayer.Character.StandEvents.M1:FireServer()
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                game.Players.LocalPlayer.Character.Stand.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                            end)
+                        until Boss.Humanoid.Health == 0 or Dio == false or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Health == 0
+                        
+                        game.Players.LocalPlayer.CharacterAdded:Wait()
+                        
+                        repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    end)
+                else
+                    CreateNotification("Project Polar", "Issue Obtaining Remote.")
+                end
+            end)
+        end
+    end
+end)
+
+local HomelessMan = false
+CreateToggle("Homeless Man", "Lair Page", function()
+    HomelessMan = not HomelessMan
+    
+    if HomelessMan then
+        while HomelessMan and task.wait() do
+            pcall(function()
+                local FireRemote = GetRemote(Vector3.new(-326.288, 67.1232, -131.778))
+                
+                if FireRemote then
+                    FireRemote:FireServer()
+                    
+                    local Boss = game:GetService("Workspace").Living:WaitForChild("Boss")
+                    
+                    pcall(function()
+                        repeat
+                            task.wait()
+                            
+                            pcall(function()
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand").Head.Transparency == 1 then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                                
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Boss:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -Distance, 3, 1, 0, 0, 1)
+                                game.Players.LocalPlayer.Character.StandEvents.M1:FireServer()
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                game.Players.LocalPlayer.Character.Stand.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                            end)
+                        until Boss.Humanoid.Health == 0 or HomelessMan == false or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Health == 0
+                        
+                        game.Players.LocalPlayer.CharacterAdded:Wait()
+                        
+                        repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    end)
+                else
+                    CreateNotification("Project Polar", "Issue Obtaining Remote.")
+                end
+            end)
+        end
+    end
+end)
+
+local Diavolo = false
+CreateToggle("Diavolo", "Lair Page", function()
+    Diavolo = not Diavolo
+    
+    if Diavolo then
+        while Diavolo and task.wait() do
+            pcall(function()
+                local FireRemote = GetRemote(Vector3.new(-70.8398, 67.1782, -982.709))
+                
+                if FireRemote then
+                    FireRemote:FireServer()
+                    
+                    local Boss = game:GetService("Workspace").Living:WaitForChild("Boss")
+                    
+                    pcall(function()
+                        repeat
+                            task.wait()
+                            
+                            pcall(function()
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand").Head.Transparency == 1 then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                                
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Boss:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -Distance, 3, 1, 0, 0, 1)
+                                game.Players.LocalPlayer.Character.StandEvents.M1:FireServer()
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                game.Players.LocalPlayer.Character.Stand.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                            end)
+                        until Boss.Humanoid.Health == 0 or Diavolo == false or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Health == 0
+                        
+                        game.Players.LocalPlayer.CharacterAdded:Wait()
+                        
+                        repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    end)
+                else
+                    CreateNotification("Project Polar", "Issue Obtaining Remote.")
+                end
+            end)
+        end
+    end
+end)
+
+local Jotaro = false
+CreateToggle("Jotaro P6", "Lair Page", function()
+    Jotaro = not Jotaro
+    
+    if Jotaro then
+        while Jotaro and task.wait() do
+            pcall(function()
+                local FireRemote = GetRemote(Vector3.new(28080.1, 47.4231, -237.188))
+                
+                if FireRemote then
+                    FireRemote:FireServer()
+                    
+                    local Boss = game:GetService("Workspace").Living:WaitForChild("Boss")
+                    
+                    pcall(function()
+                        repeat
+                            task.wait()
+                            
+                            pcall(function()
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand").Head.Transparency == 1 then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                                
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Boss:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -Distance, 3, 1, 0, 0, 1)
+                                game.Players.LocalPlayer.Character.StandEvents.M1:FireServer()
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                game.Players.LocalPlayer.Character.Stand.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                            end)
+                        until Boss.Humanoid.Health == 0 or Jotaro == false or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Health == 0
+                        
+                        game.Players.LocalPlayer.CharacterAdded:Wait()
+                        
+                        repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    end)
+                else
+                    CreateNotification("Project Polar", "Issue Obtaining Remote.")
+                end
+            end)
+        end
+    end
+end)
+
+local HeadlessHorseman = false
+CreateToggle("Headless Horseman", "Lair Page", function()
+    HeadlessHorseman = not HeadlessHorseman
+    
+    if HeadlessHorseman then
+        while HeadlessHorseman and task.wait() do
+            pcall(function()
+                local FireRemote = GetRemote(Vector3.new(-646.192, 66.5328, -503.957))
+                
+                if FireRemote then
+                    FireRemote:FireServer()
+                    
+                    local Boss = game:GetService("Workspace").Living:WaitForChild("Boss")
+                    
+                    pcall(function()
+                        repeat
+                            task.wait()
+                            
+                            pcall(function()
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand").Head.Transparency == 1 then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                                
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Boss:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -Distance, 3, 1, 0, 0, 1)
+                                game.Players.LocalPlayer.Character.StandEvents.M1:FireServer()
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                game.Players.LocalPlayer.Character.Stand.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                            end)
+                        until Boss.Humanoid.Health == 0 or HeadlessHorseman == false or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Health == 0
+                        
+                        game.Players.LocalPlayer.CharacterAdded:Wait()
+                        
+                        repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    end)
+                else
+                    CreateNotification("Project Polar", "Issue Obtaining Remote.")
+                end
+            end)
+        end
+    end
+end)
+
+CreateMenu("Quest Farms")
+
+function GetRemotes(A)
+    for i, v in ipairs(FolderDirectory.Idiot:GetChildren()) do
+        if v.Name == "ratio" and v:FindFirstChild("Person") then
+            if (v.Person.HumanoidRootPart.Position - A).Magnitude < 15 then
+                return v
+            end 
+        elseif v.Name == "ratio" or v.Name == "e" then
+            if v.Name == "ratio" and v:FindFirstChild("HumanoidRootPart") then
+                if (v.HumanoidRootPart.Position - A).Magnitude < 15 then
+                    return v
+                end    
+            elseif v.Name == "e" and v:FindFirstChild("HumanoidRootPart") then
+                if (v.HumanoidRootPart.Position - A).Magnitude < 15 then
+                    return v
+                end  
+            end
+        end
+    end
+end
+
+CreateNote("// Settings //", "Quest Farms")
+
+local UndergroundMode = false
+CreateToggle("Underground Farming Mode", "Quest Farms", function()
+    UndergroundMode = not UndergroundMode
+end)
+
+local AutoRespawn = false
+CreateToggle("Auto Respawn NPC's", "Quest Farms", function()
+    AutoRespawn = not AutoRespawn
+end)
+
+CreateBar("Quest Farms", {})
+
+local Level1 = false
+CreateToggle("Level 1+", "Quest Farms", function()
+    Level1 = not Level1
+    
+    local Npc = GetRemotes(Vector3.new(-650.064, 67.2711, -804.299))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Bad Gi"
+    if Level1 == true then
+        while Level1 == true and task.wait() and Level1 == true do
+            pcall(function()
+            for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 then
+                    Remote1:FireServer()
+                    Remote2:FireServer()
+                    
+                    repeat
+                        task.wait()
+                        pcall(function()
+                            for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                    --// waiting
+                                else
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                end
+                            end
+                            if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                            end
+                            if UndergroundMode == true then
+                                game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                            else
+                                game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                            end
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                            if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                            end
+                        end)
+                    until v:FindFirstChild("Humanoid").Health == 0 or Level1 == false
+                    
+                    if AutoRespawn == true and Level1 == true then
+                        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                    end
+                    if UndergroundMode == true and Level1 == true then
+                        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                    end
+                end
+            end
+            end)
+        end
+    end
+end)
+
+local Level10 = false
+CreateToggle("Level 10+", "Quest Farms", function()
+    Level10 = not Level10
+    
+    local Npc = GetRemotes(Vector3.new(-703.196, 67.1782, -1013.15))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Scary Monster"
+    if Level10 == true then
+        while Level10 == true and task.wait() and Level10 == true do
+            pcall(function()
+                for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                    if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 then
+                        Remote1:FireServer()
+                        Remote2:FireServer()
+                        
+                        repeat
+                            task.wait()
+                            pcall(function()
+                                for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                    if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                        --// waiting
+                                    else
+                                        game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                    end
+                                end
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                    game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                end
+                                if UndergroundMode == true then
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                                else
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                                end
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                            end)
+                        until v:FindFirstChild("Humanoid").Health == 0 or Level10 == false
+                        
+                        if AutoRespawn == true and Level10 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                        end
+                        if UndergroundMode == true and Level10 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Level15 = false
+CreateToggle("Level 15+", "Quest Farms", function()
+    Level15 = not Level15
+    
+    local Npc = GetRemotes(Vector3.new(-638.964, 66.5359, -456.357))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Rker Dummy"
+    if Level15 == true then
+        while Level15 == true and task.wait() and Level15 == true do
+            pcall(function()
+                for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                    if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 then
+                        Remote1:FireServer()
+                        Remote2:FireServer()
+                        
+                        repeat
+                            task.wait()
+                            pcall(function()
+                                for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                    if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                        --// waiting
+                                    else
+                                        game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                    end
+                                end
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                    game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                end
+                                if UndergroundMode == true then
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                                else
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                                end
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                            end)
+                        until v:FindFirstChild("Humanoid").Health == 0 or Level15 == false
+                        
+                        if AutoRespawn == true and Level15 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                        end
+                        if UndergroundMode == true and Level15 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Level25 = false
+CreateToggle("Level 25+", "Quest Farms", function()
+    Level25 = not Level25
+    
+    local Npc = GetRemotes(Vector3.new(-136.07, 72.3897, -777.996))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Dio Over Heaven"
+    if Level25 == true then
+        while Level25 == true and task.wait() do
+            pcall(function()
+                for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                    if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 and Level25 == true then
+                        Remote1:FireServer()
+                        Remote2:FireServer()
+                        
+                        repeat
+                            task.wait()
+                            pcall(function()
+                                for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                    if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                        --// waiting
+                                    else
+                                        game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                    end
+                                end
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                    game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                end
+                                if UndergroundMode == true then
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                                else
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                                end
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                            end)
+                        until v:FindFirstChild("Humanoid").Health == 0 or Level25 == false
+                        
+                        if AutoRespawn == true and Level25 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                        end
+                        if UndergroundMode == true and Level25 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Level30 = false
+CreateToggle("Level 30+", "Quest Farms", function()
+    Level30 = not Level30
+    
+    local Npc = GetRemotes(Vector3.new(-475.501, 67.1782, -987.121))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Yoshikage Kira"
+    if Level30 == true then
+        while Level30 == true and task.wait() do
+            pcall(function()
+                for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                    if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 and Level30 == true then
+                        Remote1:FireServer()
+                        Remote2:FireServer()
+                        
+                        repeat
+                            task.wait()
+                            pcall(function()
+                                for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                    if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                        --// waiting
+                                    else
+                                        game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                    end
+                                end
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                    game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                end
+                                if UndergroundMode == true then
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                                else
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                                end
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                            end)
+                        until v:FindFirstChild("Humanoid").Health == 0 or Level30 == false
+                        
+                        if AutoRespawn == true and Level30 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                        end
+                        if UndergroundMode == true and Level30 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Level40 = false
+CreateToggle("Level 40+", "Quest Farms", function()
+    Level40 = not Level40
+    
+    local Npc = GetRemotes(Vector3.new(-492.864, 67.1782, -710.837))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Angelo"
+    if Level40 == true then
+        while Level40 == true and task.wait() do
+            pcall(function()
+                for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                    if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 and Level40 == true then
+                        Remote1:FireServer()
+                        Remote2:FireServer()
+                        
+                        repeat
+                            task.wait()
+                            pcall(function()
+                                for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                    if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                        --// waiting
+                                    else
+                                        game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                    end
+                                end
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                    game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                end
+                                if UndergroundMode == true then
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                                else
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                                end
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                            end)
+                        until v:FindFirstChild("Humanoid").Health == 0 or Level40 == false
+                        
+                        if AutoRespawn == true and Level40 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                        end
+                        if UndergroundMode == true and Level40 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Level50 = false
+CreateToggle("Level 50+", "Quest Farms", function()
+    Level50 = not Level50
+    
+    local Npc = GetRemotes(Vector3.new(-303.604, 67.0773, -713.353))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Alien"
+    if Level50 == true then
+        while Level50 == true and task.wait() do
+            pcall(function()
+                for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                    if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 and Level50 == true then
+                        Remote1:FireServer()
+                        Remote2:FireServer()
+                        
+                        repeat
+                            task.wait()
+                            pcall(function()
+                                for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                    if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                        --// waiting
+                                    else
+                                        game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                    end
+                                end
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                    game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                end
+                                if UndergroundMode == true then
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                                else
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                                end
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                            end)
+                        until v:FindFirstChild("Humanoid").Health == 0 or Level50 == false
+                        
+                        if AutoRespawn == true and Level50 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                        end
+                        if UndergroundMode == true and Level50 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Level65 = false
+CreateToggle("Level 65+", "Quest Farms", function()
+    Level65 = not Level65
+    
+    local Npc = GetRemotes(Vector3.new(-515.181, 67.1402, -132.67))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Jotaro Part 4"
+    if Level65 == true then
+        while Level65 == true and task.wait() do
+            pcall(function()
+                for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                    if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 and Level65 == true then
+                        Remote1:FireServer()
+                        Remote2:FireServer()
+                        
+                        repeat
+                            task.wait()
+                            pcall(function()
+                                for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                    if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                        --// waiting
+                                    else
+                                        game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                    end
+                                end
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                    game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                end
+                                if UndergroundMode == true then
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                                else
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                                end
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                            end)
+                        until v:FindFirstChild("Humanoid").Health == 0 or Level65 == false
+                        
+                        if AutoRespawn == true and Level65 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                        end
+                        if UndergroundMode == true and Level65 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Level75 = false
+CreateToggle("Level 75+", "Quest Farms", function()
+    Level75 = not Level75
+    
+    local Npc = GetRemotes(Vector3.new(-242.013, 67.0773, -215.973))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Kakyoin"
+    if Level75 == true then
+        while Level75 == true and task.wait() do
+            pcall(function()
+                for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                    if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 and Level75 == true then
+                        Remote1:FireServer()
+                        Remote2:FireServer()
+                        
+                        repeat
+                            task.wait()
+                            pcall(function()
+                                for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                    if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                        --// waiting
+                                    else
+                                        game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                    end
+                                end
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                    game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                end
+                                if UndergroundMode == true then
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                                else
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                                end
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                            end)
+                        until v:FindFirstChild("Humanoid").Health == 0 or Level75 == false
+                        
+                        if AutoRespawn == true and Level75 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                        end
+                        if UndergroundMode == true and Level75 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Level90 = false
+CreateToggle("Level 90+", "Quest Farms", function()
+    Level90 = not Level90
+    
+    local Npc = GetRemotes(Vector3.new(-491.131, 67.1677, -33.4819))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Jungle Bandit"
+    if Level90 == true then
+        while Level90 == true and task.wait() do
+            pcall(function()
+                for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                    if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 and Level90 == true then
+                        Remote1:FireServer()
+                        Remote2:FireServer()
+                        
+                        repeat
+                            task.wait()
+                            pcall(function()
+                                for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                    if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                        --// waiting
+                                    else
+                                        game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                    end
+                                end
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                    game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                end
+                                if UndergroundMode == true then
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                                else
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                                end
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                            end)
+                        until v:FindFirstChild("Humanoid").Health == 0 or Level90 == false
+                        
+                        if AutoRespawn == true and Level90 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                        end
+                        if UndergroundMode == true and Level90 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Level130 = false
+CreateToggle("Level 130+", "Quest Farms", function()
+    Level130 = not Level130
+    
+    local Npc = GetRemotes(Vector3.new(-5181.75, -449.374, -3817.56))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Sewer Vampire"
+    if Level130 == true then
+        while Level130 == true and task.wait() do
+            pcall(function()
+                for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                    if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 and Level130 == true then
+                        Remote1:FireServer()
+                        Remote2:FireServer()
+                        
+                        repeat
+                            task.wait()
+                            pcall(function()
+                                for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                    if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                        --// waiting
+                                    else
+                                        game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                    end
+                                end
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                    game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                end
+                                if UndergroundMode == true then
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                                    if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                        game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                    end
+                                else
+                                    if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                        game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                                    end
+                                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                                end
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                                end
+                            end)
+                        until v:FindFirstChild("Humanoid").Health == 0 or Level130 == false
+                        
+                        if AutoRespawn == true and Level130 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                        end
+                        if UndergroundMode == true and Level130 == true then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Level300 = false
+CreateToggle("Level 300+", "Quest Farms", function()
+    Level300 = not Level300
+    
+    local Npc = GetRemotes(Vector3.new(-668.287, 66.1782, -184.107))
+    
+    local Remote1, Remote2 = Npc:FindFirstChild("QuestDone"), Npc:FindFirstChild("Done")
+    
+    local Target = "Pillerman"
+    if Level300 == true then
+        while Level300 == true and task.wait() do
+            pcall(function()
+            for i, v in pairs(game:GetService("Workspace").Living:GetChildren()) do
+                if v.Name == Target and v:FindFirstChild("Humanoid").Health ~= 0 and Level300 == true then
+                    Remote1:FireServer()
+                    Remote2:FireServer()
+                    
+                    repeat
+                        task.wait()
+                        pcall(function()
+                            for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.CDgui.fortnite:GetChildren()) do
+                                if v:IsA("Frame") and v.Textt.Text == "Punch" then
+                                    --// waiting
+                                else
+                                    game:GetService("Players").LocalPlayer.Character.StandEvents.M1:FireServer()
+                                end
+                            end
+                            if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand") then
+                                game:GetService("Players").LocalPlayer.Character.Stand:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                            end
+                            if UndergroundMode == true then
+                                game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -6, 4, 1, 0, 0, 1) -- -593.952698, 66.6276474, -783.119934, -0.707110405, -5.96460623e-08, -0.707103133, -8.71555841e-08, 1, 2.80376944e-09, 0.707103133, 6.36105568e-08, -0.707110405
+                            else
+                                game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = v:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, 4)
+                            end
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                            if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Aura").Value == false   then
+                                game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
+                            end
+                        end)
+                    until v:FindFirstChild("Humanoid").Health == 0 or Level300 == false
+                    
+                    if AutoRespawn == true and Level300 == true then
+                        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 0, 1000))
+                    end
+                    if UndergroundMode == true and Level300 == true then
+                        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 10, 0))
+                    end
+                end
+            end
+            end)
+        end
+    end
+end)
