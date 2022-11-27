@@ -561,48 +561,6 @@ CreateToggle("Jotaro P6", "Lair Page", function()
     end
 end)
 
-local HeadlessHorseman = false
-CreateToggle("Headless Horseman", "Lair Page", function()
-    HeadlessHorseman = not HeadlessHorseman
-    
-    if HeadlessHorseman then
-        while HeadlessHorseman and task.wait() do
-            pcall(function()
-                local FireRemote = GetRemote(Vector3.new(-646.192, 66.5328, -503.957))
-                
-                if FireRemote then
-                    FireRemote:FireServer()
-                    
-                    local Boss = game:GetService("Workspace").Living:WaitForChild("Boss")
-                    
-                    pcall(function()
-                        repeat
-                            task.wait()
-                            
-                            pcall(function()
-                                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stand").Head.Transparency == 1 then
-                                    game:GetService("Players").LocalPlayer.Character.StandEvents.Summon:FireServer()
-                                end
-                                
-                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Boss:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, -Distance, 3, 1, 0, 0, 1)
-                                game.Players.LocalPlayer.Character.StandEvents.M1:FireServer()
-                                game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
-                                game.Players.LocalPlayer.Character.Stand.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-                            end)
-                        until Boss.Humanoid.Health == 0 or HeadlessHorseman == false or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Health == 0
-                        
-                        game.Players.LocalPlayer.CharacterAdded:Wait()
-                        
-                        repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-                    end)
-                else
-                    CreateNotification("Project Polar", "Issue Obtaining Remote.")
-                end
-            end)
-        end
-    end
-end)
-
 CreateMenu("Quest Farms")
 
 function GetRemotes(A)
